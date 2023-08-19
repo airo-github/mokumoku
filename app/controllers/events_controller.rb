@@ -29,6 +29,8 @@ class EventsController < ApplicationController
 
   def create
     @event = current_user.events.build(event_params)
+    update_only_woman_true
+    
     if @event.save
       User.all.find_each do |user|
         NotificationFacade.created_event(@event, user)
@@ -60,6 +62,10 @@ class EventsController < ApplicationController
   private
 
   def event_params
-    params.require(:event).permit(:title, :content, :held_at, :prefecture_id, :thumbnail)
+    params.require(:event).permit(:title, :content, :only_woman, :held_at, :prefecture_id, :thumbnail)
+  end
+
+  def update_only_woman_true
+    @event.only_woman = true if current_user.woman? && params[:event][:only_woman] == 'woman'
   end
 end
