@@ -4,7 +4,7 @@ RSpec.describe "WomanOnlyEvents", type: :system do
   let(:user)  { create :user }
   let(:woman) { create :user, :woman_user }
   let(:event) { create :event }
-  let(:woman_only_event) { create :event, :woman_only_event }
+  let(:woman_only_event) { create :event, only_woman: true }
 
   describe '女性限定event' do
     context '女性以外のユーザーがログインした場合' do
