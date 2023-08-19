@@ -29,7 +29,7 @@ class EventsController < ApplicationController
 
   def create
     @event = current_user.events.build(event_params)
-    @event.only_woman = true if current_user.woman? && params[:event][:only_woman] == '1'
+    update_only_woman_true
     
     if @event.save
       User.all.find_each do |user|
@@ -63,5 +63,9 @@ class EventsController < ApplicationController
 
   def event_params
     params.require(:event).permit(:title, :content, :only_woman, :held_at, :prefecture_id, :thumbnail)
+  end
+
+  def update_only_woman_true
+    @event.only_woman = true if current_user.woman? && params[:event][:only_woman] == 'woman'
   end
 end
